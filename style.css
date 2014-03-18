@@ -178,7 +178,7 @@ h1 a.title, h1 a.title:visited {
 .blog_post p {
   padding-bottom: 1em;
   line-height: 140%;
-  font-family: 'Helvetica Neue', sans-serif;
+  font-family: 'Source Sans Pro', 'Helvetica Neue', sans-serif;
   font-weight: 300;
   color: #434363;
   }
@@ -187,6 +187,7 @@ h1 a.title, h1 a.title:visited {
   }
 .blog_post code {
   font-family: 'Inconsolata', monospace;
+  font-size: 13pt;
   background-color: #F1EEE8;
   padding: 0 3px;
   }
