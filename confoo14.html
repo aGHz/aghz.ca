@@ -23,7 +23,7 @@
 
 <!-- POST CONTENT -->
 
-<h1><a href="confoo14_part1" class="title">Wherein I attend Confoo</a></h1>
+<h1><a href="confoo14" class="title">Wherein I attend Confoo</a></h1>
 
 <p>At the end of February, Montreal played host to our very own international web technology conference. <a href="http://confoo.ca">Confoo</a> is my very first web conference, so what better way to kick-start this blog than with a recap of my experience.</p><div class="se-section-delimiter"></div>
 
@@ -64,6 +64,24 @@
 <p>Jordan <a href="https://twitter.com/jakerella">@jakerella</a> Kasper warned against pretending that eyeballing your site in a browser can substitute for disciplined testing. We’re already passing our Angular code through the Jasmine wringer at the NFB so not much here was new to us. But if you’re still writing cowboy javascript, Jordan has a few useful tips: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/function#Named_function_expression">name</a> your callback functions so you can get useful information in tracebacks, don’t couple your code to DOM queries but pass already selected elements to your functions instead, and don’t couple your function internals to the server by dropping some XHR in the middle of it all. Here are the <a href="http://presentboldly.com/jakerella/javascript-testing">slides</a>, and notice the beautiful <a href="http://presentboldly.com/">Blazon</a> presentation tool he’s been building at appendTo.</p>
 
 <p>Anyway, turns out Jordan’s a great guy, very fun to have beers with, and the only other human being I know of to have a Matrix skull plug like mine. Represent.</p>
+
+<h2 id="integrated-cache-invalidation">Integrated cache invalidation</h2>
+
+<p>This one absolutely blew my mind, <a href="https://twitter.com/magnushagander">Magnus Hagander</a> of the PostgreSQL team showed us how grown-ups invalidate caches. For an example setting, we were considering e-commerce websites, where products appear in many pages: details page, various category pages, sales pages, etc. When Django renders a page, it sends a custom header with all the ids of the products present. Then, in pg we write an update trigger on products that notifies Varnish of the ids that changed. We don’t want to send HTTP requests from a trigger though, so he uses the <a href="http://wiki.postgresql.org/wiki/PGQ_Tutorial">pgq</a> messaging queue from <a href="http://www.postgresql.org/docs/8.3/static/plpgsql.html">pl/pgsql</a> to do this asynchronously. Then in Varnish, we BAN hits containing this id in the custom header.</p>
+
+<p><em>TL;DR</em> The database is an integration point in the web architecture, anything that wants to change data must talk to it. We can use this to our advantage for orchestrating cache invalidation. You can find the slides for this talk as well as many other interesting ones on <a href="http://www.hagander.net/talks/">Magnus’ talks page</a>.</p><div class="se-section-delimiter"></div>
+
+<h2 id="small-data-machine-learning">Small data machine learning</h2>
+
+<p>Andrei Zmievski has a very interesting problem: he is <a href="https://twitter.com/a">@a</a> on Twitter. To get an idea of the kind of havoc this causes in his mentions stream, have a look at this <a href="https://twitter.com/search?q=%40a">Twitter search</a>. This was the story of how he trained a logistic regression classifier to spot the legit tweets referring to him. He wrote a series of functions that extracted independent and discriminant features from a corpus of tweets, and stored the results for training the model. Unfortunately, due to all the noise only 2% of the corpus was labeled as good, posing a problem in training. Neither trivial over- nor under-sampling worked, so he used a generative model to perform synthetic over-sampling. When all that was fixed he performed a typical gradient descent using cross training on the collected hand-labeled feature vectors, and now he can enjoy Twitter the same way we do.</p>
+
+<p>Useful references from the talk: the <a href="http://fastml.com/">FastML</a> blog and <a href="https://twitter.com/ianbarber">Ian Barber</a>’s <a href="http://phpir.com/">PHP Information Retrieval</a> blog.</p><div class="se-section-delimiter"></div>
+
+<h2 id="miscellanea">Miscellanea</h2>
+
+<p>There were other useful talks and I learned a great deal about Varnish, Redis, writing web apps that use offline mode, and managing distributed teams of developers. They are all worthy of mention, but the ones I wrote about stood out as the most interesting to me.</p>
+
+<p>Next up: PyCon, coming to Montréal in 2014 and 2015.</p>
 
 <!-- / POST CONTENT -->
 
